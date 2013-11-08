@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-
-from canari.maltego.utils import debug, progress
-from canari.framework import configure #, superuser
+import os, re
+from common.entities import Interface, MonitorInterface
+from canari.framework import configure , superuser
 
 __author__ = 'catalyst256'
 __copyright__ = 'Copyright 2013, Watcher Project'
@@ -14,32 +14,25 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
-    'dotransform',
-    'onterminate'
+    'dotransform'
 ]
 
-
-"""
-TODO: set the appropriate configuration parameters for your transform.
-TODO: Uncomment the line below if the transform needs to run as super-user
-"""
-#@superuser
+@superuser
 @configure(
-    label='TODO: To Something [Hello World]',
-    description='TODO: Returns a Something entity with the phrase "Hello Word!"',
-    uuids=[ 'TODO something.v2.SomethingToPhrase_HelloWorld' ],
-    inputs=[ ( 'TODO: Some Set', SomethingEntity ) ],
+    label='L0 - Set interface into Monitor Mode',
+    description='Sets your specified interface into monitor mode',
+    uuids=[ 'Watcher.v2.setint_2_monitor' ],
+    inputs=[ ( 'Watcher', Interface ) ],
     debug=True
 )
 def dotransform(request, response):
-    """
-    TODO: write your data mining logic below.
-    """
-    return response
 
-
-def onterminate():
-    """
-    TODO: Write your cleanup logic below or delete the onterminate function and remove it from the __all__ variable
-    """
-    pass
+    iface = request.value
+    set_m_mode = 'airmon-ng check kill && airmon-ng start %s' % (iface)
+    s = os.popen(set_m_mode).readlines()
+    for x in s:
+        if 'monitor mode enabled' in x:
+            for t in re.finditer('monitor mode enabled on (\w*)', x):
+                e = MonitorInterface(t.group(1))
+                response += e
+            return response
