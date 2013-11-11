@@ -19,11 +19,11 @@ __all__ = [
 
 @superuser
 @configure(
-    label='L0 - Set interface into Monitor Mode',
+    label='Watcher - Set interface into Monitor Mode',
     description='Sets your specified interface into monitor mode',
     uuids=[ 'Watcher.v2.setint_2_monitor' ],
     inputs=[ ( 'Watcher', Interface ) ],
-    debug=True
+    debug=False
 )
 def dotransform(request, response):
 

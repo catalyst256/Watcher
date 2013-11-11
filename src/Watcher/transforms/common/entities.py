@@ -22,9 +22,11 @@ class WatcherEntity(Entity):
 class Interface(WatcherEntity):
     pass
 
+@EntityField(name='Watcher.pktcount', propname='pktcount', displayname='Pkt Count', type=EntityFieldType.String)
 class MonitorInterface(WatcherEntity):
     pass
 
+@EntityField(name='Watcher.rssi', propname='aprssi', displayname='RSSI', type=EntityFieldType.String)
 @EntityField(name='Watcher.bssid', propname='apbssid', displayname='BSSID', type=EntityFieldType.String)
 @EntityField(name='Watcher.channel', propname='apchannel', displayname='Channel', type=EntityFieldType.String)
 @EntityField(name='Watcher.encryption', propname='apencryption', displayname='Encryption', type=EntityFieldType.String)
@@ -32,9 +34,12 @@ class MonitorInterface(WatcherEntity):
 class AccessPoint(WatcherEntity):
     pass
 
-@EntityField(name='Watcher.ssid', propname='ssid', displayname='SSID', type=EntityFieldType.String)
-@EntityField(name='Watcher.cmac', propname='cmac', displayname='Client MAC', type=EntityFieldType.String)
+@EntityField(name='Watcher.cmac', propname='cmac', displayname='MAC Addr', type=EntityFieldType.String)
+@EntityField(name='Watcher.monint', propname='monint', displayname='Monitor Interface', type=EntityFieldType.String)
 class SSID(WatcherEntity):
+    pass
+
+class WirelessClient(WatcherEntity):
     pass
 
 #@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)

@@ -11,6 +11,8 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'findaccesspoints',
+    'ssid2client',
     'findclientssid',
     'setint2monitor',
     'common'

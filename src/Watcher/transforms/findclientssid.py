@@ -3,7 +3,6 @@ import os
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
-from canari.maltego.utils import progress
 from common.entities import SSID, MonitorInterface
 from canari.framework import configure, superuser
 
@@ -23,35 +22,39 @@ __all__ = [
 
 @superuser
 @configure(
-    label='Look for Probe Requests',
+    label='Watcher - Look for Probe Requests',
     description='Looks for wireless Probe Requests from clients',
     uuids=[ 'Watcher.v2.findclientprobesreqs' ],
     inputs=[ ( 'Watcher', MonitorInterface ) ],
-    debug=True
+    debug=False
 )
 def dotransform(request, response):
 
     iface = request.value
     probe_reqs = []
 
+    try:
+        pktcount = int(request.fields['Watcher.pktcount'])
+    except:
+        pktcount = 100
+
     def sniff_probes(p):
         if p.haslayer(Dot11ProbeReq):
             ssid = p[Dot11ProbeReq].info
             mac = p[Dot11].addr2
-            raw = str(p[RadioTap].notdecoded).replace('\t', '\00')
-            raw2 = map(ord, raw)
-            rssi = int(raw2[6]) - 256
             if ssid != '':
-                station = ssid, mac, rssi
+                station = ssid, mac
                 if station not in probe_reqs:
                     probe_reqs.append(station)
             else:
                 pass
 
-    sniff(iface=iface, prn=sniff_probes)
+    sniff(iface=iface, prn=sniff_probes, count=pktcount)
 
-    print probe_reqs
-
-
-
+    for ssid, mac in probe_reqs:
+        e = SSID(ssid)
+        e.cmac = mac
+        e.monint = iface
+        response += e
+    return response
     
