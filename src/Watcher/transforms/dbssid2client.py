@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import sys
+import sqlite3 as lite
 from common.entities import SSID, WirelessClient
 from canari.maltego.message import Field, UIMessage
 from canari.framework import configure #, superuser
@@ -20,7 +22,7 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - Map SSID to Phone',
+    label='Watcher - Map SSID to Device',
     description='Maps an SSID to a wireless client',
     uuids=[ 'Watcher.v2.ssid_2_wirelessclient' ],
     inputs=[ ( 'Watcher', SSID ) ],
@@ -28,11 +30,25 @@ __all__ = [
 )
 def dotransform(request, response):
 
-    try:
-        mac = request.fields['Watcher.cmac']
-    except:
-        return response + UIMessage('Sorry no associated MAC address')
+    # Setup the sqlite database connection
+    watcher_db = 'Watcher/resources/databases/watcher.db'
+    con = lite.connect(watcher_db)
 
-    e = WirelessClient(mac)
-    response += e
+    client_list = []
+
+    ssid = request.value
+
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT * FROM ssid WHERE ssid like ' + "\"" + ssid + "\"")
+        while True:
+            row = cur.fetchone()
+            if row == None:
+                break
+            if row[1] not in client_list:
+                client_list.append(row[1])
+
+    for x in client_list:
+        e = WirelessClient(x)
+        response += e
     return response

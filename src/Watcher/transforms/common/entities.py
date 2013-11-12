@@ -42,4 +42,7 @@ class SSID(WatcherEntity):
 class WirelessClient(WatcherEntity):
     pass
 
+class Database(WatcherEntity):
+    pass
+
 #@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)
