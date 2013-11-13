@@ -45,4 +45,10 @@ class WirelessClient(WatcherEntity):
 class Database(WatcherEntity):
     pass
 
+class MACAddress(WatcherEntity):
+    pass
+
+class ZipFile(WatcherEntity):
+    pass
+
 #@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)

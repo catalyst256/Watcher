@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, sys
+import os, sys, thread
 import sqlite3 as lite
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
@@ -81,6 +81,17 @@ def dotransform(request, response):
                     ap_list.append(entity)
             else:
                 pass
+
+    def channel_hopper():
+        while True:
+            channel = random.randrange(1,15)
+            cmd = 'iw dev %s set channel %d' % (iface, channel)
+            os.system(cmd)
+            time.sleep(1)
+      
+
+  # Create a channel hopping thread for the duration of the packet capture
+    thread.start_new_thread(channel_hopper, ()) 
 
     sniff(iface=iface, prn=sniff_probes)
 

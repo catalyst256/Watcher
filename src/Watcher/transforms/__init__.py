@@ -11,6 +11,9 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'zipdatabase',
+    'ap2ssid',
+    'changemacaddr',
     'createdb',
     'db2acesspoint',
     'db2ssid',
