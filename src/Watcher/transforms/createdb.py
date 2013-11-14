@@ -34,7 +34,7 @@ def dotransform(request, response):
     with con:
         cur = con.cursor()
         cur.execute('CREATE TABLE ssid(ssid TEXT, mac TEXT, iface TEXT)')
-        cur.execute("CREATE TABLE aplist(ssid TEXT, bssid TEXT, channel INT, enc TEXT, iface TEXT)")
+        cur.execute("CREATE TABLE aplist(ssid TEXT, bssid TEXT, channel INT, enc TEXT, iface TEXT, enctype TEXT)")
 
     e = Database(watcher_db)
     response += e

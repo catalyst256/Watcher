@@ -51,4 +51,7 @@ class MACAddress(WatcherEntity):
 class ZipFile(WatcherEntity):
     pass
 
+class Vendor(WatcherEntity):
+    pass
+
 #@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)
