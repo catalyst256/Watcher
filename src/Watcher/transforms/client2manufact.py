@@ -59,6 +59,6 @@ def dotransform(request, response):
             mac_list.append(x)
 
     for m in mac_list:
-        e = Vendor(m[3])
+        e = Vendor(m[1])
         response += e
     return response

@@ -11,6 +11,8 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'removemonitormode',
+    'deletedb',
     'client2manufact',
     'zipdatabase',
     'ap2ssid',

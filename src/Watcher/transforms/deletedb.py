@@ -21,10 +21,10 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - Create Database & Tables',
-    description='Creates the Watcher Database and Tables',
-    uuids=[ 'Watcher.v2.create_db_tables' ],
-    inputs=[ ( 'Watcher', MonitorInterface ) ],
+    label='Watcher - Delete data from database',
+    description='Deletes data from existing Watcher database',
+    uuids=[ 'Watcher.v2.delete_db_data' ],
+    inputs=[ ( 'Watcher', Database ) ],
     debug=True
 )
 def dotransform(request, response):
@@ -32,19 +32,16 @@ def dotransform(request, response):
     watcher_db = 'Watcher/resources/databases/watcher.db'
 
     try:
-        if os.path.isfile(watcher_db) == False:
+        if os.path.isfile(watcher_db) == True:
             pass
     except:
-        return response + UIMessage('Database already exists, please run Watcher - Drop Database transform')
+        return response + UIMessage('Database doesnt exist, please run Watcher - Create Database transform')
 
     con = lite.connect(watcher_db)
 
     with con:
         cur = con.cursor()
-        cur.execute('CREATE TABLE ssid(ssid TEXT, mac TEXT, iface TEXT)')
-        cur.execute("CREATE TABLE aplist(ssid TEXT, bssid TEXT, channel INT, enc TEXT, iface TEXT, enctype TEXT)")
+        cur.execute('DELETE FROM ssid')
+        cur.execute('DELETE FROM aplist')
 
-    e = Database(watcher_db)
-    response += e
-    con.close()
-    return response
+    return response + UIMessage('Data deleted...!!!')
