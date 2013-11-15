@@ -54,4 +54,7 @@ class ZipFile(WatcherEntity):
 class Vendor(WatcherEntity):
     pass
 
+class CSVFile(WatcherEntity):
+    pass
+
 #@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)
