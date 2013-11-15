@@ -11,6 +11,8 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'resolveip2mac',
+    'arpscanfromint',
     'removemonitormode',
     'deletedb',
     'client2manufact',
