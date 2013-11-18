@@ -32,5 +32,5 @@ def dotransform(request, response):
     iface = request.value
 
     cmd = 'airmon-ng stop ' + iface + ' && service network-manager start'
-    os.system(cmd)
+    s = os.popen(cmd).readlines()
     return response + UIMessage('Monitor mode disabled..!!')
