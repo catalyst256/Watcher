@@ -57,9 +57,5 @@ class Vendor(WatcherEntity):
 class CSVFile(WatcherEntity):
     pass
 
-class Encryption(WatcherEntity):
-    pass
-
 class WPAKey(WatcherEntity):
     pass
-#@EntityField(name='Watcher.monInt', propname='monInt', displayname='Monitor Interface', type=EntityFieldType.String)
