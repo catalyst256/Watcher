@@ -21,7 +21,7 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - Create Database & Tables',
+    label='Watcher - Create Database',
     description='Creates the Watcher Database and Tables',
     uuids=[ 'Watcher.v2.create_db_tables' ],
     inputs=[ ( 'Watcher', MonitorInterface ) ],
@@ -32,10 +32,10 @@ def dotransform(request, response):
     watcher_db = 'Watcher/resources/databases/watcher.db'
 
     try:
-        if os.path.isfile(watcher_db) == False:
-            pass
+        if os.path.isfile(watcher_db) == True:
+            return response + UIMessage('Database already exists, please run "Watcher - Delete Database" transform')
     except:
-        return response + UIMessage('Database already exists, please run Watcher - Drop Database transform')
+        pass
 
     con = lite.connect(watcher_db)
 

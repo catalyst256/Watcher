@@ -11,13 +11,14 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'deletedb',
     'ssid2map',
     'stealwpakey',
     'dbase2csvfile',
     'resolveip2mac',
     'arpscanfromint',
     'removemonitormode',
-    'deletedb',
+    'deletedatadb',
     'client2manufact',
     'zipdatabase',
     'ap2ssid',

@@ -73,12 +73,15 @@ def dotransform(request, response):
             else:
                 enc = 'N'
 
-            entity = ssid, bssid, channel, enc, iface
-            if entity not in ap_list:
-                with con:
-                    cur = con.cursor()
-                    cur.execute("INSERT INTO aplist VALUES(?, ?, ?, ?, ?)", entity)
-                    ap_list.append(entity)
+            if ssid is not '':
+                entity = ssid, bssid, channel, enc, iface
+                if entity not in ap_list:
+                    with con:
+                        cur = con.cursor()
+                        cur.execute("INSERT INTO aplist VALUES(?, ?, ?, ?, ?)", entity)
+                        ap_list.append(entity)
+                else:
+                    pass
             else:
                 pass
 

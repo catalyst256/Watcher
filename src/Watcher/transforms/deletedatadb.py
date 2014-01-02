@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
-from common.entities import MonitorInterface
+import sqlite3 as lite
+from common.entities import Database
 from canari.maltego.message import UIMessage
 from canari.framework import configure #, superuser
 
@@ -20,10 +21,10 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - Delete Database',
-    description='Deletes Watcher database',
-    uuids=[ 'Watcher.v2.delete_db' ],
-    inputs=[ ( 'Watcher', MonitorInterface ) ],
+    label='Watcher - Drop data from database',
+    description='Deletes data from existing Watcher database',
+    uuids=[ 'Watcher.v2.delete_db_data' ],
+    inputs=[ ( 'Watcher', Database ) ],
     debug=True
 )
 def dotransform(request, response):
@@ -33,12 +34,14 @@ def dotransform(request, response):
     try:
         if os.path.isfile(watcher_db) == False:
             return response + UIMessage('Database doesnt exist, please run Watcher - Create Database transform')
-        else:
-            os.remove(watcher_db)
-            return response + UIMessage('Database deleted...!!!')
     except:
         pass
 
-    
+    con = lite.connect(watcher_db)
 
-    
+    with con:
+        cur = con.cursor()
+        cur.execute('DELETE FROM ssid')
+        cur.execute('DELETE FROM aplist')
+
+    return response + UIMessage('Data deleted...!!!')
