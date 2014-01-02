@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import requests, re
-from common.entities import SSID
+from common.entities import AccessPoint
 from canari.maltego.entities import Image
 from canari.maltego.message import Field, UIMessage
 from canari.framework import configure #, superuser
@@ -21,27 +21,27 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - SSID to Google Map',
-    description='Uses Wigle.net to try and get Map of SSID location',
-    uuids=[ 'Watcher.v2.ssid_2_googlemap' ],
-    inputs=[ ( 'Watcher', SSID ) ],
+    label='Watcher - BSSID to Google Map',
+    description='Uses Wigle.net to try and get Map of BSSID location',
+    uuids=[ 'Watcher.v2.bssid_2_googlemap' ],
+    inputs=[ ( 'Watcher', AccessPoint ) ],
     debug=True
 )
 def dotransform(request, response):
     
-    ssid = request.value
+    bssid = request.fields['Watcher.bssid']
 
     username = 'catalyst25'
     password = 'Hwyaa370'
     
     
     w_login = 'https://wigle.net/gps/gps/main/login'
-    w_query = 'https://wigle.net/gps/gps/main/confirmquery/'
+    w_query = 'https://wigle.net/gps/gps/main/confirmlocquery/'
     gurl_base = 'http://maps.googleapis.com/maps/api/streetview?size=800x800&sensor=false&location='
 
     map_details = []
     
-    def Wigle_SSID(username, password, ssid):
+    def Wigle_Loc(username, password, bssid):
     # Create a session with requests to enable the use of auth cookies
         agent = requests.Session()
     
@@ -49,21 +49,17 @@ def dotransform(request, response):
         agent.post(w_login, data={'credential_0': username, 'credential_1': password, 'destination': '/gps/gps/main'})
     
     # Submit query against the MAC address of the AP (confirmlocquery, netid)
-        response = agent.post(url=w_query, data={'ssid': ssid,'Query': 'Query'})
+        response = agent.post(url=w_query, data={'netid': bssid,'Query': 'Query'})
     # Pull the latitude and longitude from the raw response
         for s in re.finditer(r'maplat=(\S*)&maplon=(\S*)&map', response.text):
             lat = s.group(1)
             lng = s.group(2)
-    
-    # Build the Google Maps URL
             gurl = gurl_base + str(lat) + ',' + str(lng)
-            mapping = str(lat), str(lng), gurl
-    
-    # Add the details to a variable for creating the entity
+            mapping = str(lat), str(lng), gurl, bssid, ltime
             if mapping not in map_details:
                 map_details.append(mapping)
     
-    Wigle_SSID(username, password, ssid)
+    Wigle_Loc(username, password, bssid)
     
     for x in map_details:
         cords = x[0], x[1]

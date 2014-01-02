@@ -11,6 +11,7 @@ __email__ = 'catalyst256@gmail.com'
 __status__ = 'Development'
 
 __all__ = [
+    'bssid2map',
     'deletedb',
     'ssid2map',
     'stealwpakey',
