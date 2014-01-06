@@ -1,3 +1,4 @@
+//Each machine starts with a statement like this
 machine("Watcher.ProbeHunter", 
     displayName:"Watcher -  Hunter", 
     author:"catalyst256",
@@ -6,22 +7,10 @@ probe requests to associated wireless access\
 points") {
 
     onTimer(30){
-        run("Watcher.v2.db_2_ssid")
-        path{
-            paths{
-                run("Watcher.v2.db_2_ap")
-                
-                run("Watcher.v2.ssid_2_wirelessclient")
-        
-                paths{
-                    
-                    run("Watcher.v2.ap_2_ssid")
-                }
-            } 
-        }
-        
+        run("Watcher.v2.db_2_wirelessclient")
+        run("Watcher.v2.client_2_ssid")
+        run("Watcher.v2.db_2_ap")
+
+
     }
-    run("Watcher.v2.ssid_2_wirelessclient")     
 }
-    
-    

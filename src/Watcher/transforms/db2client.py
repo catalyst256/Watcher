@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import sqlite3 as lite
-from common.entities import SSID, WirelessClient
+from common.entities import MonitorInterface, WirelessClient
 from canari.maltego.message import Field, UIMessage
 from canari.framework import configure #, superuser
 
@@ -22,33 +22,33 @@ __all__ = [
 
 #@superuser
 @configure(
-    label='Watcher - Map SSIDs',
-    description='Maps SSIDs from db',
-    uuids=[ 'Watcher.v2.client_2_ssid' ],
-    inputs=[ ( 'Watcher', WirelessClient ) ],
+    label='Watcher - Maps Clients',
+    description='Maps wireless clients from the database',
+    uuids=[ 'Watcher.v2.db_2_wirelessclient' ],
+    inputs=[ ( 'Watcher', MonitorInterface ) ],
     debug=False
 )
 def dotransform(request, response):
-    
+
     # Setup the sqlite database connection
     watcher_db = 'Watcher/resources/databases/watcher.db'
     con = lite.connect(watcher_db)
 
-    w_mac = request.value
+    client_list = []
 
-    ssid_list = []
+    ssid = request.value
 
     with con:
         cur = con.cursor()
-        cur.execute('SELECT * FROM ssid WHERE mac like ' + "\"" + w_mac + "\"")
+        cur.execute('SELECT * FROM ssid')
         while True:
             row = cur.fetchone()
             if row == None:
                 break
-            if row[0] not in ssid_list:
-                ssid_list.append(row[0])
+            if row[1] not in client_list:
+                client_list.append(row[1])
 
-    for x in ssid_list:
-        e = SSID(x)
+    for x in client_list:
+        e = WirelessClient(x)
         response += e
     return response

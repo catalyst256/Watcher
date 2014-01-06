@@ -27,7 +27,7 @@ __all__ = [
     'createdb',
     'db2acesspoint',
     'db2ssid',
-    'dbssid2client',
+    'db2client',
     'sniffwireless',
     'setint2monitor',
     'common'

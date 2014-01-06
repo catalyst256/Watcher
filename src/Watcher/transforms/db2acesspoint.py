@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import sqlite3 as lite
-from common.entities import AccessPoint, MonitorInterface
+from common.entities import AccessPoint, SSID
 from canari.maltego.message import Field, UIMessage
 from canari.framework import configure #, superuser
 
@@ -25,7 +25,7 @@ __all__ = [
     label='Watcher - Map Wireless AP',
     description='Maps an Wireless Access Points',
     uuids=[ 'Watcher.v2.db_2_ap' ],
-    inputs=[ ( 'Watcher', MonitorInterface ) ],
+    inputs=[ ( 'Watcher', SSID ) ],
     debug=False
 )
 def dotransform(request, response):
@@ -33,12 +33,12 @@ def dotransform(request, response):
     # Setup the sqlite database connection
     watcher_db = 'Watcher/resources/databases/watcher.db'
     con = lite.connect(watcher_db)
-
+    ap_name = request.value
     ap_list = []
 
     with con:
         cur = con.cursor()
-        cur.execute('SELECT * FROM aplist')
+        cur.execute('SELECT * FROM aplist WHERE ssid like ' + "\"" + ap_name + "\"")
         while True:
             row = cur.fetchone()
             if row == None:
