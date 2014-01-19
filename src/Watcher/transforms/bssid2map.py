@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import requests, re
+import requests
+import re
+from canari.config import config
 from common.entities import AccessPoint
 from canari.maltego.entities import Image
 from canari.maltego.message import Field, UIMessage
@@ -31,8 +33,8 @@ def dotransform(request, response):
     
     bssid = request.fields['Watcher.bssid']
 
-    username = 'catalyst25'
-    password = 'Hwyaa370'
+    username = config['wigle/username']
+    password = config['wigle/password']
     
     
     w_login = 'https://wigle.net/gps/gps/main/login'
