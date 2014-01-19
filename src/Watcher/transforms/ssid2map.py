@@ -33,9 +33,8 @@ def dotransform(request, response):
     
     ssid = request.value
 
-    username = config['wigle/username']
-    password = config['wigle/password']
-    
+    username = config['wigle/username'].strip('\'')
+    password = config['wigle/password'].strip('\'')
     
     w_login = 'https://wigle.net/gps/gps/main/login'
     w_query = 'https://wigle.net/gps/gps/main/confirmquery/'
@@ -68,7 +67,7 @@ def dotransform(request, response):
     Wigle_SSID(username, password, ssid)
     
     for x in map_details:
-        cords = x[0], x[1]
+        cords = 'Lat: ' + str(x[0]).strip('\'') + '\nLong: ' + str(x[1]).strip('\'')
         e = Image(cords)
         e.url = x[2]
         response += e

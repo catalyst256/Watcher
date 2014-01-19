@@ -32,14 +32,12 @@ __all__ = [
 def dotransform(request, response):
     
     bssid = request.fields['Watcher.bssid']
-
-    username = config['wigle/username']
-    password = config['wigle/password']
-    
+    username = config['wigle/username'].strip('\'')
+    password = config['wigle/password'].strip('\'')
     
     w_login = 'https://wigle.net/gps/gps/main/login'
     w_query = 'https://wigle.net/gps/gps/main/confirmlocquery/'
-    gurl_base = 'http://maps.googleapis.com/maps/api/streetview?size=800x800&sensor=false&location='
+    gurl_base = 'http://maps.googleapis.com/maps/api/streetview?size=800x800&sensor=true&location='
 
     map_details = []
     
@@ -52,19 +50,20 @@ def dotransform(request, response):
     
     # Submit query against the MAC address of the AP (confirmlocquery, netid)
         response = agent.post(url=w_query, data={'netid': bssid,'Query': 'Query'})
+
     # Pull the latitude and longitude from the raw response
         for s in re.finditer(r'maplat=(\S*)&maplon=(\S*)&map', response.text):
             lat = s.group(1)
             lng = s.group(2)
             gurl = gurl_base + str(lat) + ',' + str(lng)
-            mapping = str(lat), str(lng), gurl, bssid, ltime
+            mapping = str(lat), str(lng), gurl, bssid
             if mapping not in map_details:
                 map_details.append(mapping)
     
     Wigle_Loc(username, password, bssid)
     
     for x in map_details:
-        cords = x[0], x[1]
+        cords = 'Lat: ' + str(x[0]).strip('\'') + '\nLong: ' + str(x[1]).strip('\'')
         e = Image(cords)
         e.url = x[2]
         response += e
