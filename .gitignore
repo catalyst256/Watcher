@@ -11,3 +11,6 @@
 
 #Exclude Watcher sqlite database
 /src/Watcher/resources/databases/watcher.db
+
+# Exclude config file
+/src/Watcher.conf
