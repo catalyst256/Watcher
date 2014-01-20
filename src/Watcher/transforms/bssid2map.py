@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import json
 import requests
+import pprint
 import re
 from canari.config import config
 from common.entities import AccessPoint
@@ -38,7 +40,8 @@ def dotransform(request, response):
     w_login = 'https://wigle.net/gps/gps/main/login'
     w_query = 'https://wigle.net/gps/gps/main/confirmlocquery/'
     gurl_base = 'http://maps.googleapis.com/maps/api/streetview?size=800x800&sensor=true&location='
-
+    base_url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='
+    end_url = '&sensor=false'
     map_details = []
     
     def Wigle_Loc(username, password, bssid):
@@ -63,8 +66,10 @@ def dotransform(request, response):
     Wigle_Loc(username, password, bssid)
     
     for x in map_details:
-        cords = 'Lat: ' + str(x[0]).strip('\'') + '\nLong: ' + str(x[1]).strip('\'')
-        e = Image(cords)
-        e.url = x[2]
-        response += e
+        theurl = base_url + str(x[0]).strip('\'') + ',' + str(x[1]).strip('\'') + end_url
+        r = requests.get(theurl).json()
+        test = json.dumps([s['formatted_address'] for s in r['results']])
+        addr = (test).strip('[').strip(']').split('"')[1]
+        addr = addr.split(',')
+        print addr
     return response

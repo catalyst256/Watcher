@@ -59,3 +59,12 @@ class CSVFile(WatcherEntity):
 
 class WPAKey(WatcherEntity):
     pass
+
+@EntityField(name='Watcher.streetaddr', propname='streetaddr', displayname='Street Address', type=EntityFieldType.String)
+@EntityField(name='Watcher.cityaddr', propname='cityaddr', displayname='City', type=EntityFieldType.String)
+@EntityField(name='Watcher.pcodeaddr', propname='pcodeaddr', displayname='PostCode', type=EntityFieldType.String)
+@EntityField(name='Watcher.country', propname='country', displayname='Country', type=EntityFieldType.String)
+@EntityField(name='Watcher.lataddr', propname='lataddr', displayname='Latitude', type=EntityFieldType.String)
+@EntityField(name='Watcher.longaddr', propname='longaddr', displayname='Longitude', type=EntityFieldType.String)
+class HomeAddress(WatcherEntity):
+    pass
