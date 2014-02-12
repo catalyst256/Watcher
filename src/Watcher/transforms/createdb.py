@@ -25,7 +25,7 @@ __all__ = [
     description='Creates the Watcher Database and Tables',
     uuids=[ 'Watcher.v2.create_db_tables' ],
     inputs=[ ( 'Watcher', MonitorInterface ) ],
-    debug=True
+    debug=False
 )
 def dotransform(request, response):
 

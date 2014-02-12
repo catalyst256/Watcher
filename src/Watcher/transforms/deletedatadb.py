@@ -25,7 +25,7 @@ __all__ = [
     description='Deletes data from existing Watcher database',
     uuids=[ 'Watcher.v2.delete_db_data' ],
     inputs=[ ( 'Watcher', Database ) ],
-    debug=True
+    debug=False
 )
 def dotransform(request, response):
 
