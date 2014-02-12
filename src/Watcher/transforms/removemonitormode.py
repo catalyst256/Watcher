@@ -25,7 +25,7 @@ __all__ = [
     description='Removes monitor mode from an interface',
     uuids=[ 'Watcher.v2.remove_monitor_mode' ],
     inputs=[ ( 'Watcher', MonitorInterface ) ],
-    debug=True
+    debug=False
 )
 def dotransform(request, response):
 

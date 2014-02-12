@@ -14,7 +14,9 @@ setup(
         '' : [ '*.gif', '*.png', '*.conf', '*.mtz', '*.machine' ] # list of resources
     },
     install_requires=[
-        'canari'
+        'canari>=0.8',
+        'request>=2.0.1',
+        'sqlite3'
     ],
     dependency_links=[
         # custom links for the install_requires
