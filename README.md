@@ -1,44 +1,36 @@
-# README - Watcher
+# Project Watcher - Maltego with a twist of wireless
 
-Welcome to Canari. You might be wondering what all these files are about. Before you can use the power of
-`canari install-package` you needed to create a transform package and that's exactly what you did here! I've given you a
-directory structure to use in the following manner:
+This is a canari framework based Maltego transform pack that allows you to perform wireless sniffing within Maltego.
+It uses a sqlite3 database to store collected data allowing for future expansion of the project and to use the data elsewhere.
 
-* `src/Watcher` directory is where all your stuff goes in terms of auxiliary modules that you may need for your
-  modules
-* `src/Watcher/transforms` directory is where all your transform modules should be placed. An example
-  `helloworld` transform is there for your viewing pleasure.
-* `src/Watcher/transforms/common` directory is where you can put some common code for your transforms like result
-  parsing, entities, etc.
-* `src/Watcher/transforms/common/entities.py` is where you define your custom entities. Take a look at the
-  examples provided if you want to play around with custom entities.
-* `maltego/` is where you can store your Maltego entity exports.
-* `src/Watcher/resources/maltego` directory is where your `entities.mtz` and `*.machine` files can be stored for auto
-  install and uninstall.
-* `src/Watcher/resources/external` directory is where you can place non-Python transforms written in other languages.
+It has been tested on Kali and requires the following additional software (outside of Python).
 
-If you're going to add a new transform in the transforms directory, remember to update the `__all__` variable in
-`src/Watcher/transforms/__init__.py`. Otherwise, `canari install-package` won't attempt to install the transform.
-Alternatively, `canari create-transform <transform name>` can be used within the `src/Watcher/transforms` directory
-to generate a transform module and have it automatically added to the `__init__.py` file, like so:
+aircrack-ng
 
-To test your transform, simply `cd` into the src directory and run `canari debug-transform`, like so:
+The following python modules are also required:
 
-```bash
-$ canari debug-transform Watcher.transforms.helloworld Phil
-%50
-D:This was pointless!
-%100
-`- MaltegoTransformResponseMessage:
-  `- Entities:
-    `- Entity:  {'Type': 'test.MyTestEntity'}
-      `- Value: Hello Phil!
-      `- Weight: 1
-      `- AdditionalFields:
-        `- Field: 2 {'DisplayName': 'Field 1', 'Name': 'test.field1', 'MatchingRule': 'strict'}
-        `- Field: test {'DisplayName': 'Field N', 'Name': 'test.fieldN', 'MatchingRule': 'strict'}
-```
+sqlite3
+requests
+canari (goes without saying)
 
-Cool right? If you have any further questions don't hesitate to drop us a line;)
+To install the transform pack you need to do the following (make sure you have canari installed already):
 
-Have fun!
+1. clone this repo `git clone https://github.com/catalyst256/Watcher/watcher.git`
+2. change to the `src` directory `cd src/`
+3. `canari create-profile Watcher -w [full path to src folder]` on my machine this is:
+            `canari create-profile Watcher -w /root/localTransforms/Watcher/src`
+4. Load Maltego and import configuration file that was just created in the `src` folder.
+
+You will have a number of new transforms, entities and a Maltego machine to use.
+
+To use Watcher the process is as follows:
+
+1. Create an interface entity in Maltego (set to your wireless interface name)
+2. Run the `Watcher - Set Interface into Monitor Mode`
+3. Run the `Watcher - Create database` (this creates a sqlite database in the `src/Watcher/resource/database` folder)
+4. Run the `Watcher - Sniff wireless sniff` transform (leave this running)
+5. Run the Maltego Machine `Watcher - Hunter` (accessible from the monitor interface entity)
+
+Leave it running to see all the beacon and probe requests from devices flow into a beautiful graph..
+
+Enjoy!! (any issues raise a ticket on GitHub)
