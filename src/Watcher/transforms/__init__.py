@@ -20,7 +20,7 @@ __all__ = [
     #'arpscanfromint',
     'removemonitormode',
     'deletedatadb',
-    #'client2manufact',
+    'client2manufact',
     'zipdatabase',
     'changemacaddr',
     'createdb',
