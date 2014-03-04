@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-import os, sys, thread
+import os
+import sys
+import thread
 import sqlite3 as lite
+import datetime
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
@@ -52,8 +55,12 @@ def dotransform(request, response):
                 station = ssid, mac, iface
                 if station not in c_list:
                     with con:
+                        i = datetime.datetime.now()
+                        tdate = i.strftime('%Y/%m/%d')
+                        ttime = i.strftime('%H:%M:%S')
+                        tstation = tdate, ttime, station[0], station[1], station[2]
                         cur = con.cursor()
-                        cur.execute("INSERT INTO ssid VALUES(?, ?, ?)", station)
+                        cur.execute("INSERT OR IGNORE INTO ssid (tdate, ttime, ssid, mac, iface) VALUES(?, ?, ?, ?, ?)", tstation)
                         c_list.append(station)
                 else:
                     pass
@@ -77,8 +84,12 @@ def dotransform(request, response):
                 entity = ssid, bssid, channel, enc, iface
                 if entity not in ap_list:
                     with con:
+                        i = datetime.datetime.now()
+                        tdate = i.strftime('%Y/%m/%d')
+                        ttime = i.strftime('%H:%M:%S')
+                        tentity = tdate, ttime, entity[0], entity[1], entity[2], entity[3], rssi, entity[4]
                         cur = con.cursor()
-                        cur.execute("INSERT INTO aplist VALUES(?, ?, ?, ?, ?)", entity)
+                        cur.execute("INSERT INTO aplist VALUES(?, ?, ?, ?, ?, ?, ?, ?)", tentity)
                         ap_list.append(entity)
                 else:
                     pass

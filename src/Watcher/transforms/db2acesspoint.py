@@ -46,11 +46,12 @@ def dotransform(request, response):
             if row not in ap_list:
                 ap_list.append(row)
 
-    for ssid, bssid, channel, enc, monint in ap_list:
+    for ddate, dtime, ssid, bssid, channel, enc, rssi, monint in ap_list:
         e = AccessPoint(ssid)
         e.apbssid = bssid
         e.apchannel = channel
         e.apencryption = enc
         e.apmoninterface = monint
+        e.aprssi = rssi
         response += e
     return response

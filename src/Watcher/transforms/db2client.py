@@ -45,8 +45,8 @@ def dotransform(request, response):
             row = cur.fetchone()
             if row == None:
                 break
-            if row[1] not in client_list:
-                client_list.append(row[1])
+            if row[3] not in client_list:
+                client_list.append(row[3])
 
     for x in client_list:
         e = WirelessClient(x)

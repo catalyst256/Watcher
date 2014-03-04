@@ -45,8 +45,8 @@ def dotransform(request, response):
             row = cur.fetchone()
             if row == None:
                 break
-            if row[0] not in ssid_list:
-                ssid_list.append(row[0])
+            if row[2] not in ssid_list:
+                ssid_list.append(row[2])
 
     for x in ssid_list:
         e = SSID(x)
