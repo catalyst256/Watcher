@@ -15,7 +15,7 @@ canari (goes without saying)
 
 To install the transform pack you need to do the following (make sure you have canari installed already):
 
-1. clone this repo `git clone https://github.com/catalyst256/Watcher/watcher.git`
+1. clone this repo `git clone https://github.com/catalyst256/Watcher.git`
 2. change to the `src` directory `cd src/`
 3. `canari create-profile Watcher -w [full path to src folder]` on my machine this is:
             `canari create-profile Watcher -w /root/localTransforms/Watcher/src`
