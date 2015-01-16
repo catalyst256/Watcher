@@ -15,8 +15,7 @@ setup(
     },
     install_requires=[
         'canari>=0.8',
-        'request>=2.0.1',
-        'sqlite3'
+        'request>=2.0.1'
     ],
     dependency_links=[
         # custom links for the install_requires
